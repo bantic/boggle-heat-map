@@ -44,9 +44,12 @@
     </header>
     
     <div id="main">
-      <div id='canvas_wrapper' style='width:400px; height:400px; margin: 30px auto;'>
-        <canvas id='canvas' width='400' height='400' style='border: 1px solid black;'></canvas>
+      <div id='canvas_wrapper' style='width:400px; height:400px; margin: 30px auto; position: relative;'>
+        <canvas id='canvas_layer2' width='400' height='400' style='border: 1px solid black; position: absolute; left: 0; top: 0; z-index:1;'></canvas>
+        <canvas id='canvas_layer1' width='400' height='400' style='border: 1px solid black; position: absolute; left: 0; top: 0; z-index:0;'></canvas>
       </div>
+      
+      <a href="javascript:drawHeatRects(context1, boggle_heats); return false">draw!!</a>
     </div>
     
     <footer>
@@ -58,9 +61,11 @@
   <!-- Javascript at the bottom for fast page loading -->
 
   <!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+  <!--
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
-  
+  -->
+  <script src="/js/jquery.js"></script>
   
   <!-- scripts concatenated and minified via ant build script-->
   <script src="js/plugins.js"></script>
@@ -68,7 +73,7 @@
   <!-- end concatenated and minified scripts-->
 
   <!-- my libs -->
-  <script src="js/mylibs/boggle.js"></script>
+  <script src="js/mylibs/boggle.js?v=4"></script>
   
   <!--[if lt IE 7 ]>
     <script src="js/libs/dd_belatedpng.js"></script>
