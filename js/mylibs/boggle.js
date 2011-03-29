@@ -35,8 +35,9 @@ function drawHeatRects(ctx, boggle_heats) {
   }
 }
 
-function drawPath(ctx, path) {
+function drawPath(ctx, path, delay) {
   console.log("starting new path");
+  delay = delay || 0;
   ctx.clearRect(0,0, 400, 400);
   var rows = 4;
   var cols = 4;
@@ -63,11 +64,10 @@ function drawPath(ctx, path) {
       var x2 = (path[i][0] * col_width) + (col_width / 2);
       var y2 = (path[i][1] * row_height) + (row_height / 2);
       
-      console.log(x1 + ", " + y1 + ". " + x2 + ", " + y2);
-      
-      setTimeout(drawLine(x1,y1,x2,y2), 500*i);
+      setTimeout(console.log(x1 + ", " + y1 + ". " + x2 + ", " + y2), 500*i + delay);
+      setTimeout(console.log(boggle_tiles[path[i][1]][path[i][0]]), 500*i + delay);
+      setTimeout(drawLine(x1,y1,x2,y2), 500*i + delay);
     }
-    console.log(boggle_tiles[path[i][1]][path[i][0]]);
     last_point = path[i];
   }
 }
@@ -79,8 +79,11 @@ function drawPathHelper(ctx, path) {
 }
 
 function drawPaths(ctx, paths) {
+  var current_delay = 0;
   for (var i = 0; i < paths.length; i++) {
-    setTimeout(drawPathHelper(ctx, paths[i]), 5000*i);
+    var path_time = 500*paths[i].length;
+    setTimeout(drawPathHelper(ctx, paths[i]), 500*paths[i].length*i + current_delay);
+    current_delay
   }
 }
 
@@ -113,4 +116,4 @@ function drawGrid(ctx, boggle_tiles) {
 
 drawHeatRects(context1, boggle_heats);
 drawGrid(context2, boggle_tiles);
-drawPaths(context1, boggle_paths);
+// drawPaths(context1, boggle_paths);
