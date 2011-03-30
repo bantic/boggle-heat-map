@@ -35,55 +35,84 @@ function drawHeatRects(ctx, boggle_heats) {
   }
 }
 
+function drawLine(ctx, x1,y1,x2,y2) {
+  return function() {
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.stroke();
+  }
+}
+
+function addLetterToWord(letter, last_letter) {
+  return function() {
+    $(".word.current").append( letter );
+    if (last_letter) {
+      console.log("last letter!");
+      drawing_paths = false;
+    }
+  }
+}
+
+
 function drawPath(ctx, path, delay) {
   console.log("starting new path");
+  newWord();
+  drawing_paths = true;
   delay = delay || 0;
-  ctx.clearRect(0,0, 400, 400);
   var rows = 4;
   var cols = 4;
   var row_height = ctx.canvas.height / rows;
   var col_width  = ctx.canvas.width  / cols;
   var last_point = null;
-  
-  ctx.strokeStyle = "rgb(0,255,0)";
-  
-  var drawLine = function(x1,y1,x2,y2) {
-    return function() {
-      ctx.lineWidth = 2;
-      ctx.moveTo(x1,y1);
-      ctx.lineTo(x2,y2);
-      ctx.stroke();
-    }
-  }
-  
+
+  ctx.strokeStyle = "rgba(255,0,0,0.3)";
+
+
   for (var i = 0; i < path.length; i++) {
     if (last_point) {
       var x1 = (last_point[0] * col_width) + (col_width / 2);
       var y1 = (last_point[1] * row_height) + (row_height / 2);
-      
+
       var x2 = (path[i][0] * col_width) + (col_width / 2);
       var y2 = (path[i][1] * row_height) + (row_height / 2);
-      
-      setTimeout(console.log(x1 + ", " + y1 + ". " + x2 + ", " + y2), 500*i + delay);
-      setTimeout(console.log(boggle_tiles[path[i][1]][path[i][0]]), 500*i + delay);
-      setTimeout(drawLine(x1,y1,x2,y2), 500*i + delay);
+
+      var new_delay = 500*i + delay;
+
+      setTimeout(console.log(x1 + ", " + y1 + ". " + x2 + ", " + y2), new_delay);
+      setTimeout(drawLine(ctx, x1,y1,x2,y2), new_delay);
     }
+    var letter = boggle_tiles[path[i][1]][path[i][0]];
+    var last_letter = (typeof(path[i+1]) === 'undefined');
+    setTimeout(console.log("add letter " + letter), new_delay);
+    setTimeout(addLetterToWord(letter, last_letter), new_delay);
     last_point = path[i];
   }
 }
 
-function drawPathHelper(ctx, path) {
+function newWord() {
+  $(".word.current").removeClass("current");
+  $("#words").append("<div class='word current'></div>");
+}
+
+function drawPathsHelper(ctx, paths) {
   return function() {
-    drawPath(ctx, path);
+    drawPaths(ctx, paths);
   }
 }
 
 function drawPaths(ctx, paths) {
-  var current_delay = 0;
-  for (var i = 0; i < paths.length; i++) {
-    var path_time = 500*paths[i].length;
-    setTimeout(drawPathHelper(ctx, paths[i]), 500*paths[i].length*i + current_delay);
-    current_delay
+  if (drawing_paths) {
+    setTimeout(drawPathsHelper(ctx, paths), 100);
+    return;
+  } else {
+    console.log("ok to draw!");
+  }
+  if (paths[current_path]) {
+    drawPath(ctx, paths[current_path]);
+    current_path++;
+    setTimeout(drawPathsHelper(ctx, paths), 100);
   }
 }
 
@@ -114,6 +143,21 @@ function drawGrid(ctx, boggle_tiles) {
   }
 }
 
-drawHeatRects(context1, boggle_heats);
+function makeGrid(boggle_tiles) {
+  var rows = boggle_tiles.length;
+  var cols = boggle_tiles[0].length;
+  for (var r = 0; r < rows; r++) {
+    $('#grid').append("<div class='row'></div>");
+    for (var c = 0; c < cols; c++) {
+      var letter = boggle_tiles[c][r];
+      var cur_row = $(".row").last();
+      cur_row.append("<div class='letter' id='" + c + "_" + r + "'>" + letter + "</div>");
+    }
+  }
+}
+
 drawGrid(context2, boggle_tiles);
-// drawPaths(context1, boggle_paths);
+var current_path = 0;
+var drawing_paths = false;
+setTimeout(drawPathsHelper(context1, boggle_paths), 1000);
+// makeGrid(boggle_tiles);
