@@ -80,12 +80,12 @@ function drawPath(ctx, path, delay) {
 
       var new_delay = 500*i + delay;
 
-      setTimeout(console.log(x1 + ", " + y1 + ". " + x2 + ", " + y2), new_delay);
+      logLater(x1 + ", " + y1 + ". " + x2 + ", " + y2, new_delay);
       setTimeout(drawLine(ctx, x1,y1,x2,y2), new_delay);
     }
     var letter = boggle_tiles[path[i][1]][path[i][0]];
     var last_letter = (typeof(path[i+1]) === 'undefined');
-    setTimeout(console.log("add letter " + letter), new_delay);
+    logLater("add letter " + letter, new_delay);
     setTimeout(addLetterToWord(letter, last_letter), new_delay);
     last_point = path[i];
   }
@@ -154,6 +154,10 @@ function makeGrid(boggle_tiles) {
       cur_row.append("<div class='letter' id='" + c + "_" + r + "'>" + letter + "</div>");
     }
   }
+}
+
+function logLater(msg, delay) {
+  setTimeout(function() {console.log(msg)}, delay);
 }
 
 drawGrid(context2, boggle_tiles);
