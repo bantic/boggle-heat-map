@@ -55,6 +55,31 @@ function addLetterToWord(letter, last_letter) {
   }
 }
 
+function highlightLetterPosition(row, column) {
+  return function() {
+    $(".letter.current").removeClass("current").addClass("current_word");
+    $("#" + column + "_" + row).addClass("current");
+    heatLetter(row, column);
+  }
+}
+
+function heatLetter(row, column) {
+  var letter = $("#" + column + "_" + row);
+  var bg = letter.css("background-color");
+  var scale = 1.0 / boggle_paths.length;
+  console.log("bg: " + bg);
+  var a = bg.split(",").pop();
+  console.log("a: " + a);
+  var b = a.replace(" ","").replace(")","");
+  console.log("b: " + b);
+  bg = parseFloat(b,10);
+  bg = bg + scale;
+  var bg = "rgba(255,0,0," + bg + ")";
+  console.log("letter at : " + row + ", column " + bg);
+  letter.css("background-color", bg);
+}
+
+var time_factor = 100;
 
 function drawPath(ctx, path, delay) {
   console.log("starting new path");
@@ -67,7 +92,9 @@ function drawPath(ctx, path, delay) {
   var col_width  = ctx.canvas.width  / cols;
   var last_point = null;
 
-  ctx.strokeStyle = "rgba(255,0,0,0.3)";
+  var scale = 1.0 / boggle_paths.length;
+
+  ctx.strokeStyle = "rgba(255,0,0,0.1)";
 
 
   for (var i = 0; i < path.length; i++) {
@@ -78,7 +105,7 @@ function drawPath(ctx, path, delay) {
       var x2 = (path[i][0] * col_width) + (col_width / 2);
       var y2 = (path[i][1] * row_height) + (row_height / 2);
 
-      var new_delay = 500*i + delay;
+      var new_delay = time_factor*i + delay;
 
       logLater(x1 + ", " + y1 + ". " + x2 + ", " + y2, new_delay);
       setTimeout(drawLine(ctx, x1,y1,x2,y2), new_delay);
@@ -87,12 +114,15 @@ function drawPath(ctx, path, delay) {
     var last_letter = (typeof(path[i+1]) === 'undefined');
     logLater("add letter " + letter, new_delay);
     setTimeout(addLetterToWord(letter, last_letter), new_delay);
+    setTimeout(highlightLetterPosition(path[i][0], path[i][1]), new_delay);
     last_point = path[i];
   }
 }
 
 function newWord() {
   $(".word.current").removeClass("current");
+  $(".letter.current_word").removeClass("current_word");
+  $(".letter.current").removeClass("current");
   $("#words").append("<div class='word current'></div>");
 }
 
@@ -151,7 +181,7 @@ function makeGrid(boggle_tiles) {
     for (var c = 0; c < cols; c++) {
       var letter = boggle_tiles[r][c];
       var cur_row = $(".row").last();
-      cur_row.append("<div class='letter' id='" + c + "_" + r + "'>" + letter.toUpperCase() + "</div>");
+      cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + "</div>");
     }
   }
 }

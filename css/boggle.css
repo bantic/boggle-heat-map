@@ -26,4 +26,13 @@
   font-size: 28px;
   text-align: center;
   line-height: 98px;
+  background: rgba(255,0,0,0);
+}
+
+.letter.current {
+  color: #FF0000;
+}
+
+.letter.current_word {
+  color: #AA0000;
 }
