@@ -1,6 +1,6 @@
-var canvas2 = document.getElementById('canvas_layer2');
+// var canvas2 = document.getElementById('canvas_layer2');
 var canvas1 = document.getElementById('canvas_layer1');
-var context2 = canvas2.getContext('2d');
+// var context2 = canvas2.getContext('2d');
 var context1 = canvas1.getContext('2d');
 
 var boggle_tiles = [["n","u","s","l"],["r","x","n","i"],["m","u","a","i"],["a","s","m","g"]];
@@ -149,9 +149,9 @@ function makeGrid(boggle_tiles) {
   for (var r = 0; r < rows; r++) {
     $('#grid').append("<div class='row'></div>");
     for (var c = 0; c < cols; c++) {
-      var letter = boggle_tiles[c][r];
+      var letter = boggle_tiles[r][c];
       var cur_row = $(".row").last();
-      cur_row.append("<div class='letter' id='" + c + "_" + r + "'>" + letter + "</div>");
+      cur_row.append("<div class='letter' id='" + c + "_" + r + "'>" + letter.toUpperCase() + "</div>");
     }
   }
 }
@@ -160,8 +160,8 @@ function logLater(msg, delay) {
   setTimeout(function() {console.log(msg)}, delay);
 }
 
-drawGrid(context2, boggle_tiles);
+// drawGrid(context2, boggle_tiles);
 var current_path = 0;
 var drawing_paths = false;
 setTimeout(drawPathsHelper(context1, boggle_paths), 1000);
-// makeGrid(boggle_tiles);
+makeGrid(boggle_tiles);

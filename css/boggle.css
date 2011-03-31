@@ -5,3 +5,25 @@
   left: 10px;
   top: 10px;
 }
+
+#grid {
+  width: 400px;
+  height: 400px;
+  border: 1px solid black;
+}
+
+.row {
+  width: 400px;
+  height: 100px;
+}
+
+.letter {
+  float: left;
+  width: 98px;
+  height: 98px;
+  border: 1px solid black;
+  font-weight: bold;
+  font-size: 28px;
+  text-align: center;
+  line-height: 98px;
+}
