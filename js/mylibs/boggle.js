@@ -193,5 +193,5 @@ function logLater(msg, delay) {
 // drawGrid(context2, boggle_tiles);
 var current_path = 0;
 var drawing_paths = false;
-setTimeout(drawPathsHelper(context1, boggle_paths), 1000);
+setTimeout(drawPathsHelper(context1, boggle_paths.sort()), 1000);
 makeGrid(boggle_tiles);
