@@ -45,12 +45,59 @@ function drawLine(ctx, x1,y1,x2,y2) {
   }
 }
 
-function addLetterToWord(letter, last_letter) {
+function getDir(pointA, pointB) {
+  var diff_x = pointB[0] - pointA[0];
+  var diff_y = pointB[1] - pointA[1];
+  
+  switch(diff_y)
+  {
+  case 1:
+    // S
+    switch(diff_x) {
+    case 1:
+      return "se";
+    case 0:
+      return "s";
+    case -1:
+      return "sw";
+    }
+  case -1:
+    // N
+    switch(diff_x) {
+    case 1:
+      return "ne";
+    case 0:
+      return "n";
+    case -1:
+      return "nw";
+    }
+  case 0:
+    switch(diff_x) {
+    case 1:
+      return "e";
+    case -1:
+      return "w";
+    }
+  }
+}
+
+var dirs = {};
+
+function addLetterToWord(current_point, next_point) {
   return function() {
+    var letter = boggle_tiles[current_point[1]][current_point[0]];
     $(".word.current").append( letter );
-    if (last_letter) {
-      console.log("last letter!");
+    if ( !next_point ) {
       drawing_paths = false;
+    } else {
+      var letter_id = current_point[1] + "_" + current_point[0]
+      var _dirs = dirs[letter_id];
+      if (typeof(_dirs) == 'undefined') {
+        _dirs = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
+        dirs[letter_id] = _dirs;
+      }
+      var dir = getDir(current_point, next_point);
+      dirs[letter_id][dir] += 1;
     }
   }
 }
@@ -67,22 +114,17 @@ function heatLetter(row, column) {
   var letter = $("#" + column + "_" + row);
   var bg = letter.css("background-color");
   var scale = 1.0 / boggle_paths.length;
-  console.log("bg: " + bg);
   var a = bg.split(",").pop();
-  console.log("a: " + a);
   var b = a.replace(" ","").replace(")","");
-  console.log("b: " + b);
   bg = parseFloat(b,10);
   bg = bg + scale;
   var bg = "rgba(255,0,0," + bg + ")";
-  console.log("letter at : " + row + ", column " + bg);
   letter.css("background-color", bg);
 }
 
-var time_factor = 100;
+var time_factor = 10;
 
 function drawPath(ctx, path, delay) {
-  console.log("starting new path");
   newWord();
   drawing_paths = true;
   delay = delay || 0;
@@ -97,25 +139,27 @@ function drawPath(ctx, path, delay) {
   ctx.strokeStyle = "rgba(255,0,0,0.1)";
 
 
+  var next_point, prev_point;
   for (var i = 0; i < path.length; i++) {
-    if (last_point) {
-      var x1 = (last_point[0] * col_width) + (col_width / 2);
-      var y1 = (last_point[1] * row_height) + (row_height / 2);
+    var current_point = path[i];
+    var next_point    = path[i+1];
 
-      var x2 = (path[i][0] * col_width) + (col_width / 2);
-      var y2 = (path[i][1] * row_height) + (row_height / 2);
+    if (i > 0) {
+      var prev_point = path[i-1];
+      var x1 = (prev_point[0] * col_width) + (col_width / 2);
+      var y1 = (prev_point[1] * row_height) + (row_height / 2);
+
+      var x2 = (current_point[0] * col_width) + (col_width / 2);
+      var y2 = (current_point[1] * row_height) + (row_height / 2);
 
       var new_delay = time_factor*i + delay;
 
-      logLater(x1 + ", " + y1 + ". " + x2 + ", " + y2, new_delay);
       setTimeout(drawLine(ctx, x1,y1,x2,y2), new_delay);
     }
-    var letter = boggle_tiles[path[i][1]][path[i][0]];
-    var last_letter = (typeof(path[i+1]) === 'undefined');
-    logLater("add letter " + letter, new_delay);
-    setTimeout(addLetterToWord(letter, last_letter), new_delay);
+
+    setTimeout(addLetterToWord(current_point, next_point), new_delay);
     setTimeout(highlightLetterPosition(path[i][0], path[i][1]), new_delay);
-    last_point = path[i];
+    prev_point = current_point;
   }
 }
 
@@ -134,15 +178,13 @@ function drawPathsHelper(ctx, paths) {
 
 function drawPaths(ctx, paths) {
   if (drawing_paths) {
-    setTimeout(drawPathsHelper(ctx, paths), 100);
+    setTimeout(drawPathsHelper(ctx, paths), 10);
     return;
-  } else {
-    console.log("ok to draw!");
   }
   if (paths[current_path]) {
     drawPath(ctx, paths[current_path]);
     current_path++;
-    setTimeout(drawPathsHelper(ctx, paths), 100);
+    setTimeout(drawPathsHelper(ctx, paths), 10);
   }
 }
 
@@ -193,5 +235,5 @@ function logLater(msg, delay) {
 // drawGrid(context2, boggle_tiles);
 var current_path = 0;
 var drawing_paths = false;
-// setTimeout(drawPathsHelper(context1, boggle_paths.sort()), 1000);
+setTimeout(drawPathsHelper(context1, boggle_paths), 1000);
 makeGrid(boggle_tiles);
