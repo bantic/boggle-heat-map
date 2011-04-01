@@ -176,6 +176,27 @@ function drawPathsHelper(ctx, paths) {
   }
 }
 
+function setUpDirectionsDivs() {
+  function htmlForDirections(_dirs) {
+    var html = "";
+    var dir_names = ['n','e','s','w','ne','se','nw','sw']
+    for (var i = 0; i < dir_names.length; i++) {
+      html = html + "<div class='" + dir_names[i] + "'>" + _dirs[dir_names[i]] + "</div>";
+    }
+    return html;
+  }
+  for (var i = 0; i < boggle_tiles.length; i++) {
+    for (var j = 0; j < boggle_tiles.length; j++) {
+      var div_id = i + "_" + j;
+      var div_inner_id = div_id + "_inner";
+      console.log("div inner id: " + div_inner_id);
+      var div_inner = $("#" + div_inner_id);
+      console.log("inner html: " + htmlForDirections(dirs[div_id]));
+      div_inner.html(htmlForDirections(dirs[div_id]));
+    }
+  }
+}
+
 function drawPaths(ctx, paths) {
   if (drawing_paths) {
     setTimeout(drawPathsHelper(ctx, paths), 10);
@@ -188,33 +209,6 @@ function drawPaths(ctx, paths) {
   }
 }
 
-function drawGrid(ctx, boggle_tiles) {
-  var x, y, text_x, text_y;
-
-  var rows = boggle_tiles.length;
-  var cols = boggle_tiles[0].length;
-  var row_height = ctx.canvas.height / rows;
-  var col_width  = ctx.canvas.width  / cols;
-  
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = "rgb(0,0,0)";
-  ctx.fillStyle = "rgb(0,0,0)";
-  ctx.font = "normal 48px sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  for (var col = 0; col < cols; col++) {
-    for (var row = 0; row < rows; row++) {
-       x = col * col_width;
-       y = row * row_height;
-       ctx.strokeRect(x,y, col_width, row_height);
-       text_x = col * col_width + (col_width / 2);
-       text_y = row * row_height + (row_height / 2);
-       ctx.fillText(boggle_tiles[row][col], text_x, text_y);
-    }
-  }
-}
-
 function makeGrid(boggle_tiles) {
   var rows = boggle_tiles.length;
   var cols = boggle_tiles[0].length;
@@ -223,7 +217,15 @@ function makeGrid(boggle_tiles) {
     for (var c = 0; c < cols; c++) {
       var letter = boggle_tiles[r][c];
       var cur_row = $(".row").last();
-      cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + "</div>");
+      var inner_div = "<div id='" + r + "_" + c + "_inner' class='inner'>hello</div>";
+      cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + inner_div + "</div>");
+      $("#" + r + "_" + c).mouseover(function() {
+        var id = $(this).attr("id");
+        $("#" + id + "_inner").show();
+      }).mouseout(function() {
+        var id = $(this).attr("id");
+        $("#" + id + "_inner").hide();
+      });
     }
   }
 }
@@ -232,7 +234,6 @@ function logLater(msg, delay) {
   setTimeout(function() {console.log(msg)}, delay);
 }
 
-// drawGrid(context2, boggle_tiles);
 var current_path = 0;
 var drawing_paths = false;
 setTimeout(drawPathsHelper(context1, boggle_paths), 1000);

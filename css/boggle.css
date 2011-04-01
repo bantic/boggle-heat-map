@@ -27,7 +27,71 @@
   text-align: center;
   line-height: 98px;
   background: rgba(255,0,0,0);
+  position: relative;
 }
+
+.letter .inner {
+  display: none;
+  width: 98px;
+  height: 98px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  font-size: 10px;
+  line-height: 10px;
+}
+
+.letter .inner .n {
+  position: absolute;
+  top: 0;
+  left: 50%;
+}
+
+.letter .inner .s {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+}
+
+.letter .inner .e {
+  position: absolute;
+  bottom: 50%;
+  right: 0;
+}
+
+.letter .inner .w {
+  position: absolute;
+  bottom: 50%;;
+  left: 0;
+}
+
+.letter .inner .ne {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.letter .inner .nw {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.letter .inner .sw {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.letter .inner .se {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+
+
 
 .letter.current {
   color: #FF0000;
