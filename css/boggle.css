@@ -94,9 +94,15 @@
 
 
 .letter.current {
-  color: #FF0000;
+  text-shadow: 0 0 10px #075AF2;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #075AF2;
+  color: #FFF;
 }
 
 .letter.current_word {
-  color: #AA0000;
+  text-shadow: 0 0 10px #9DBCF5;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #9DBCF5;
+  color: #FFF;
 }
