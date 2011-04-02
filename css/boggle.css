@@ -97,6 +97,8 @@
   text-shadow: 0 0 10px #075AF2;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: #075AF2;
+  -webkit-transition: color 0.2s linear;
+  -webkit-transition: text-shadow 0.2s linear;
   color: #FFF;
 }
 
@@ -104,5 +106,7 @@
   text-shadow: 0 0 10px #9DBCF5;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: #9DBCF5;
+  -webkit-transition: text-shadow 0.2s linear;
+  -webkit-transition: color 0.2s linear;
   color: #FFF;
 }
