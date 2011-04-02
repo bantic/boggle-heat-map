@@ -1,49 +1,7 @@
-// var canvas2 = document.getElementById('canvas_layer2');
-var canvas1 = document.getElementById('canvas_layer1');
-// var context2 = canvas2.getContext('2d');
-var context1 = canvas1.getContext('2d');
 
 var boggle_tiles = [["n","u","s","l"],["r","x","n","i"],["m","u","a","i"],["a","s","m","g"]];
 var boggle_heats = [[0.0344827586206897,0.229885057471264,0.229885057471264,0.218390804597701],[0.206896551724138,0.0,0.701149425287356,0.505747126436782],[0.310344827586207,0.96551724137931,1.0,0.505747126436782],[0.103448275862069,0.425287356321839,0.367816091954023,0.114942528735632]];
 var boggle_paths = [[[1,0],[0,0],[0,1],[1,2],[2,1]],[[1,0],[0,1],[1,2],[1,3]],[[1,0],[2,1],[2,2],[2,3],[3,2]],[[1,0],[2,1],[2,2],[1,2]],[[1,0],[2,1],[1,2],[0,1],[0,0]],[[2,0],[2,1],[2,2],[3,3]],[[2,0],[2,1],[2,2],[3,1],[3,0]],[[2,0],[2,1],[1,2],[0,2]],[[2,0],[2,1],[1,2],[2,3]],[[2,0],[2,1],[1,2],[0,1]],[[2,0],[2,1],[3,2],[3,3]],[[2,0],[2,1],[1,0],[0,1]],[[2,0],[1,0],[0,1],[0,2],[0,3]],[[2,0],[3,1],[2,1],[2,2]],[[2,0],[3,1],[2,1],[1,2],[1,3]],[[2,0],[3,1],[2,2],[2,3]],[[3,0],[3,1],[3,2],[2,1]],[[3,0],[3,1],[2,1],[2,2]],[[3,0],[3,1],[2,1],[1,2],[1,3]],[[3,0],[3,1],[2,1],[1,2],[0,2]],[[3,0],[3,1],[2,1],[1,2],[2,3]],[[3,0],[3,1],[2,1],[1,0],[2,0]],[[3,0],[3,1],[2,2],[1,3]],[[0,1],[1,2],[1,3],[2,3],[2,2]],[[0,1],[1,2],[1,3],[0,3]],[[0,1],[1,2],[1,3],[0,2],[0,3]],[[0,1],[1,2],[1,3],[2,2]],[[0,1],[1,2],[2,3],[2,2],[2,1]],[[0,1],[1,0],[2,0],[3,1],[2,1]],[[1,1],[0,2],[0,3],[1,3]],[[2,1],[3,1],[2,2],[1,3]],[[2,1],[2,2],[3,2],[3,3]],[[2,1],[2,2],[1,3],[1,2],[0,3]],[[2,1],[2,2],[3,1],[3,0]],[[2,1],[2,2],[3,1],[2,0]],[[2,1],[1,2],[0,2],[0,3]],[[2,1],[1,2],[2,3],[2,2]],[[2,1],[3,2],[2,2],[1,3]],[[3,1],[2,1],[1,2],[0,1],[0,0]],[[3,1],[2,1],[3,2],[2,2]],[[3,1],[2,1],[1,0],[0,1],[0,0]],[[3,1],[2,2],[2,1],[1,2],[1,3]],[[3,1],[2,2],[2,1],[1,0],[2,0]],[[3,1],[2,0],[1,0],[0,1],[1,2],[1,3]],[[0,2],[1,2],[1,3],[0,3]],[[0,2],[1,2],[1,3],[2,2]],[[0,2],[1,2],[2,1],[3,1],[2,2]],[[0,2],[1,2],[2,1],[3,2],[2,2]],[[0,2],[0,3],[1,3],[1,2]],[[0,2],[0,3],[1,3],[2,2]],[[0,2],[0,3],[1,3],[2,2],[3,2]],[[0,2],[0,3],[1,3],[2,2],[3,1]],[[0,2],[0,3],[1,2],[1,1]],[[0,2],[0,3],[1,2],[2,1]],[[1,2],[0,1],[1,0],[2,0]],[[1,2],[2,1],[2,2],[2,3],[3,2]],[[1,2],[2,1],[2,0],[1,0],[0,0]],[[1,2],[2,1],[1,0],[0,1],[0,0]],[[2,2],[3,2],[2,1],[1,2]],[[2,2],[3,2],[2,1],[1,0]],[[2,2],[2,3],[3,2],[2,1]],[[2,2],[2,3],[3,2],[2,1],[3,1]],[[2,2],[2,1],[3,1],[3,0]],[[2,2],[2,1],[3,1],[2,0]],[[2,2],[2,1],[2,0],[1,0]],[[2,2],[2,1],[1,2],[1,3]],[[2,2],[2,1],[3,2],[2,3],[1,2],[1,3]],[[2,2],[2,1],[1,0],[2,0]],[[2,2],[3,1],[2,1],[1,2]],[[2,2],[3,1],[2,1],[1,0]],[[3,2],[2,2],[2,1],[1,2],[1,3]],[[3,2],[2,2],[2,1],[1,0],[2,0]],[[3,2],[2,1],[3,1],[2,2]],[[3,2],[2,1],[1,2],[0,1],[0,0]],[[3,2],[2,1],[1,0],[0,1],[0,0]],[[0,3],[0,2],[1,2],[2,1],[2,2],[2,3]],[[0,3],[1,2],[2,3],[2,2],[3,1],[3,0]],[[1,3],[2,3],[1,2],[0,1]],[[1,3],[0,3],[1,2],[0,2]],[[1,3],[0,3],[1,2],[2,3]],[[1,3],[0,3],[1,2],[0,1]],[[1,3],[0,3],[1,2],[2,1],[2,2]],[[1,3],[1,2],[0,1],[0,2],[0,3]],[[1,3],[0,2],[1,2],[0,1]],[[1,3],[2,2],[3,2],[2,3]],[[1,3],[2,2],[3,2],[2,1]],[[1,3],[2,2],[1,2],[0,2]],[[1,3],[2,2],[1,2],[2,3]],[[1,3],[2,2],[1,2],[0,1]],[[1,3],[2,2],[2,1],[2,0]],[[1,3],[2,2],[2,1],[2,0],[3,1]],[[1,3],[2,2],[3,1],[2,1]],[[1,3],[2,2],[3,1],[3,0]],[[2,3],[2,2],[3,2],[2,1]],[[2,3],[2,2],[3,2],[2,1],[2,0]],[[2,3],[2,2],[1,2],[1,1]],[[2,3],[2,2],[1,2],[2,1]],[[2,3],[2,2],[2,1],[3,1]],[[2,3],[2,2],[2,1],[3,1],[2,0]],[[2,3],[2,2],[2,1],[1,1]],[[2,3],[2,2],[2,1],[2,0]],[[2,3],[2,2],[2,1],[1,2],[1,3]],[[2,3],[2,2],[2,1],[1,2],[0,2],[0,3]],[[2,3],[2,2],[2,1],[3,2]],[[2,3],[2,2],[2,1],[1,0],[2,0]],[[2,3],[2,2],[1,3],[0,3]],[[2,3],[2,2],[1,3],[1,2]],[[2,3],[2,2],[3,3],[3,2]],[[2,3],[2,2],[3,1],[2,1]],[[2,3],[2,2],[3,1],[2,1],[2,0]],[[2,3],[2,2],[3,1],[3,0]],[[2,3],[1,2],[1,3],[0,3]],[[2,3],[1,2],[1,3],[2,2]],[[2,3],[1,2],[2,1],[3,1],[2,2]],[[2,3],[1,2],[2,1],[3,2],[2,2]],[[2,3],[3,2],[2,2],[2,1]],[[2,3],[3,2],[2,2],[1,3]],[[2,3],[3,2],[2,2],[1,3],[0,2]],[[2,3],[3,2],[2,2],[1,3],[0,2],[0,3]],[[2,3],[3,2],[2,1],[2,2]],[[2,3],[3,2],[2,1],[1,1]],[[2,3],[3,2],[2,1],[1,2],[1,3]],[[2,3],[3,2],[2,1],[1,0],[2,0]],[[3,3],[2,2],[3,2],[2,1]],[[3,3],[2,2],[3,2],[2,1],[2,0]],[[3,3],[2,2],[2,3],[3,2],[2,1]],[[3,3],[2,2],[1,2],[1,3]],[[3,3],[2,2],[1,2],[0,2]],[[3,3],[2,2],[1,2],[2,3]],[[3,3],[2,2],[1,2],[0,1]],[[3,3],[2,2],[1,2],[2,1]],[[3,3],[2,2],[3,1],[2,1]],[[3,3],[2,2],[3,1],[2,1],[2,0]],[[3,3],[2,2],[3,1],[3,0]]];
-
-
-function drawHeatRects(ctx, boggle_heats) {
-  var x, y, text_x, text_y;
-
-  var rows = boggle_heats.length;
-  var cols = boggle_heats[0].length;
-  var row_height = ctx.canvas.height / rows;
-  var col_width  = ctx.canvas.width  / cols;
-  
-  var drawHeatRect = function(col,row) {
-    return function() {
-      var x = col * col_width;
-      var y = row * row_height;
-      ctx.fillStyle = "rgba(255,0,0," + boggle_heats[col][row] + ")";
-      ctx.fillRect(x,y, col_width, row_height);
-    }
-  }
-  
-  var i = 0;
-  for (var col = 0; col < cols; col++) {
-    i++;
-    for (var row = 0; row < rows; row++) {
-      i++;
-       setTimeout(drawHeatRect(col,row), 100*i);
-    }
-  }
-}
-
-function drawLine(ctx, x1,y1,x2,y2) {
-  return function() {
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(x1,y1);
-    ctx.lineTo(x2,y2);
-    ctx.stroke();
-  }
-}
 
 function getDir(pointA, pointB) {
   var diff_x = pointB[0] - pointA[0];
@@ -81,102 +39,7 @@ function getDir(pointA, pointB) {
   }
 }
 
-var dirs = {};
-
-function addLetterToWord(current_point, next_point) {
-  return function() {
-    var letter = boggle_tiles[current_point[1]][current_point[0]];
-    $(".word.current").append( letter );
-    if ( !next_point ) {
-      drawing_paths = false;
-    } else {
-      var letter_id = current_point[1] + "_" + current_point[0]
-      var _dirs = dirs[letter_id];
-      if (typeof(_dirs) == 'undefined') {
-        _dirs = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
-        dirs[letter_id] = _dirs;
-      }
-      var dir = getDir(current_point, next_point);
-      dirs[letter_id][dir] += 1;
-    }
-  }
-}
-
-function highlightLetterPosition(row, column) {
-  return function() {
-    $(".letter.current").removeClass("current").addClass("current_word");
-    $("#" + column + "_" + row).addClass("current");
-    heatLetter(row, column);
-  }
-}
-
-function heatLetter(row, column) {
-  var letter = $("#" + column + "_" + row);
-  var bg = letter.css("background-color");
-  var scale = 1.0 / boggle_paths.length;
-  var a = bg.split(",").pop();
-  var b = a.replace(" ","").replace(")","");
-  bg = parseFloat(b,10);
-  bg = bg + scale;
-  var bg = "rgba(255,0,0," + bg + ")";
-  letter.css("background-color", bg);
-}
-
-var time_factor = 10;
-
-function drawPath(ctx, path, delay) {
-  newWord();
-  drawing_paths = true;
-  delay = delay || 0;
-  var rows = 4;
-  var cols = 4;
-  var row_height = ctx.canvas.height / rows;
-  var col_width  = ctx.canvas.width  / cols;
-  var last_point = null;
-
-  var scale = 1.0 / boggle_paths.length;
-
-  ctx.strokeStyle = "rgba(255,0,0,0.1)";
-
-
-  var next_point, prev_point;
-  for (var i = 0; i < path.length; i++) {
-    var current_point = path[i];
-    var next_point    = path[i+1];
-
-    if (i > 0) {
-      var prev_point = path[i-1];
-      var x1 = (prev_point[0] * col_width) + (col_width / 2);
-      var y1 = (prev_point[1] * row_height) + (row_height / 2);
-
-      var x2 = (current_point[0] * col_width) + (col_width / 2);
-      var y2 = (current_point[1] * row_height) + (row_height / 2);
-
-      var new_delay = time_factor*i + delay;
-
-      setTimeout(drawLine(ctx, x1,y1,x2,y2), new_delay);
-    }
-
-    setTimeout(addLetterToWord(current_point, next_point), new_delay);
-    setTimeout(highlightLetterPosition(path[i][0], path[i][1]), new_delay);
-    prev_point = current_point;
-  }
-}
-
-function newWord() {
-  $(".word.current").removeClass("current");
-  $(".letter.current_word").removeClass("current_word");
-  $(".letter.current").removeClass("current");
-  $("#words").append("<div class='word current'></div>");
-}
-
-function drawPathsHelper(ctx, paths) {
-  return function() {
-    drawPaths(ctx, paths);
-  }
-}
-
-function setUpDirectionsDivs() {
+function setUpDirectionsDivs(__dirs) {
   function htmlForDirections(_dirs) {
     var html = "";
     var dir_names = ['n','e','s','w','ne','se','nw','sw']
@@ -189,52 +52,179 @@ function setUpDirectionsDivs() {
     for (var j = 0; j < boggle_tiles.length; j++) {
       var div_id = i + "_" + j;
       var div_inner_id = div_id + "_inner";
-      console.log("div inner id: " + div_inner_id);
       var div_inner = $("#" + div_inner_id);
-      console.log("inner html: " + htmlForDirections(dirs[div_id]));
-      div_inner.html(htmlForDirections(dirs[div_id]));
+      div_inner.html(htmlForDirections(__dirs[div_id]));
     }
   }
 }
 
-function drawPaths(ctx, paths) {
-  if (drawing_paths) {
-    setTimeout(drawPathsHelper(ctx, paths), 10);
-    return;
-  }
-  if (paths[current_path]) {
-    drawPath(ctx, paths[current_path]);
-    current_path++;
-    setTimeout(drawPathsHelper(ctx, paths), 10);
-  }
-}
-
-function makeGrid(boggle_tiles) {
-  var rows = boggle_tiles.length;
-  var cols = boggle_tiles[0].length;
-  for (var r = 0; r < rows; r++) {
-    $('#grid').append("<div class='row'></div>");
-    for (var c = 0; c < cols; c++) {
-      var letter = boggle_tiles[r][c];
-      var cur_row = $(".row").last();
-      var inner_div = "<div id='" + r + "_" + c + "_inner' class='inner'>hello</div>";
-      cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + inner_div + "</div>");
-      $("#" + r + "_" + c).mouseover(function() {
-        var id = $(this).attr("id");
-        $("#" + id + "_inner").show();
-      }).mouseout(function() {
-        var id = $(this).attr("id");
-        $("#" + id + "_inner").hide();
-      });
+function deriveDirections(boggle_paths) {
+  var __dirs = {};
+  var empty_dirs = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
+  
+  for (var i = 0; i < boggle_paths.length; i++) {
+    var cur_path = boggle_paths[i];
+    for (var j = 0; j < cur_path.length; j++) {
+      var cur_tile = cur_path[j];
+      var tile_id  = cur_tile[1] + "_" + cur_tile[0];
+      if (typeof(__dirs[tile_id]) == 'undefined') {
+        __dirs[tile_id] = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
+      }
+      var next_tile = cur_path[j + 1];
+      if (typeof(next_tile) !== 'undefined') {
+        var __dir = getDir( cur_tile, next_tile);
+        __dirs[tile_id][__dir] += 1;
+      }
     }
   }
+  
+  return __dirs;
+}
+
+function getMaxFromDirs(dirs) {
+  
 }
 
 function logLater(msg, delay) {
   setTimeout(function() {console.log(msg)}, delay);
 }
 
-var current_path = 0;
-var drawing_paths = false;
-setTimeout(drawPathsHelper(context1, boggle_paths), 1000);
-makeGrid(boggle_tiles);
+function BoggleVisualizer(boggle_tiles, boggle_paths) {
+  this.boggle_tiles = boggle_tiles;
+  this.boggle_paths = boggle_paths;
+  this.rows         = boggle_tiles.length;
+  this.cols         = boggle_tiles[0].length;
+  
+  this.canvas = document.getElementById('canvas_layer1');
+  this.ctx    = this.canvas.getContext('2d');
+  
+  this.drawing_paths    = false;
+  this.current_path_idx = 0;
+  this.time_factor      = 10;
+  
+  
+  this.makeGrid = function() {
+    for (var r = 0; r < this.rows; r++) {
+      $('#grid').append("<div class='row'></div>");
+      for (var c = 0; c < this.cols; c++) {
+        var letter = this.boggle_tiles[r][c];
+        var cur_row = $(".row").last();
+        var inner_div = "<div id='" + r + "_" + c + "_inner' class='inner'>hello</div>";
+        cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + inner_div + "</div>");
+        $("#" + r + "_" + c).mouseover(function() {
+          var id = $(this).attr("id");
+          $("#" + id + "_inner").show();
+        }).mouseout(function() {
+          var id = $(this).attr("id");
+          $("#" + id + "_inner").hide();
+        });
+      }
+    }
+  }
+  
+  this.drawPathsHelper = function() {
+    var that = this;
+    return function() {
+      that.drawPaths();
+    }
+  }
+  
+  this.drawPaths = function() {
+    if (this.drawing_paths) {
+      setTimeout(this.drawPathsHelper(), 50);
+      return;
+    }
+    if (this.boggle_paths[this.current_path_idx]) {
+      this.drawPath(this.boggle_paths[this.current_path_idx]);
+      this.current_path_idx++;
+      setTimeout(this.drawPathsHelper(), 50);
+    }
+  }
+  
+  this.drawPath = function(path, delay) {
+    this.newWord();
+    this.drawing_paths = true;
+    delay = delay || 0;
+    var row_height = 100;
+    var col_width  = 100;
+    var last_point = null;
+
+    this.ctx.strokeStyle = "rgba(255,0,0,0.1)";
+
+    var next_point, prev_point;
+    for (var i = 0; i < path.length; i++) {
+      var current_point = path[i];
+      var next_point    = path[i+1];
+
+      if (i > 0) {
+        var prev_point = path[i-1];
+        var x1 = (prev_point[0] * col_width)  + (col_width  / 2);
+        var y1 = (prev_point[1] * row_height) + (row_height / 2);
+
+        var x2 = (current_point[0] * col_width) + (col_width / 2);
+        var y2 = (current_point[1] * row_height) + (row_height / 2);
+
+        var new_delay = this.time_factor*i + delay;
+
+        setTimeout(this.drawLine(x1,y1,x2,y2), new_delay);
+      }
+
+      setTimeout(this.addLetterToWord(current_point, next_point), new_delay);
+      setTimeout(this.highlightLetterPosition(current_point[0], current_point[1]), new_delay);
+      prev_point = current_point;
+    }
+  }  
+  
+  this.newWord = function() {
+    $(".word.current").removeClass("current");
+    $(".letter.current_word").removeClass("current_word");
+    $(".letter.current").removeClass("current");
+    $("#words").append("<div class='word current'></div>");
+  }
+  
+  this.drawLine = function(x1,y1,x2,y2) {
+    var ctx = this.ctx;
+    return function() {
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x1,y1);
+      ctx.lineTo(x2,y2);
+      ctx.stroke();
+    }
+  }
+  
+  this.addLetterToWord = function(current_point, next_point) {
+    var that = this;
+    return function() {
+      var letter = that.boggle_tiles[current_point[1]][current_point[0]];
+      $(".word.current").append( letter );
+      if ( !next_point ) {
+        that.drawing_paths = false;
+      }
+    }
+  }
+
+  this.highlightLetterPosition = function(row, column) {
+    var that = this;
+    return function() {
+      $(".letter.current").removeClass("current").addClass("current_word");
+      $("#" + column + "_" + row).addClass("current");
+      that.heatLetter(row, column);
+    }
+  }
+  
+  this.heatLetter = function(row, column) {
+    var letter = $("#" + column + "_" + row);
+    var bg = letter.css("background-color");
+    var scale = 1.0 / this.boggle_paths.length;
+    bg = bg.split(",").pop().replace(" ","").replace(")","");
+    bg = parseFloat(bg,10) + scale;
+    bg = "rgba(255,0,0," + bg + ")";
+    letter.css("background-color", bg);
+  }
+  
+}
+
+var bg = new BoggleVisualizer(boggle_tiles, boggle_paths);
+bg.makeGrid();
+bg.drawPaths();
