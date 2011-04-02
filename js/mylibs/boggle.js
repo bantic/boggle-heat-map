@@ -54,7 +54,8 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   
   this.drawing_paths    = false;
   this.current_path_idx = 0;
-  this.time_factor      = 1;
+  this.word_delay       = 1500;
+  this.letter_delay     = 250;
   
   
   this.makeGrid = function() {
@@ -118,7 +119,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
         var x2 = (current_point[0] * col_width) + (col_width / 2);
         var y2 = (current_point[1] * row_height) + (row_height / 2);
 
-        var new_delay = this.time_factor*i + delay;
+        var new_delay = this.letter_delay*i + delay;
 
         setTimeout(this.drawLine(x1,y1,x2,y2), new_delay);
       }
@@ -153,7 +154,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       var letter = that.boggle_tiles[current_point[1]][current_point[0]];
       $(".word.current").append( letter );
       if ( !next_point ) {
-        that.drawing_paths = false;
+        setTimeout(function() {that.drawing_paths = false;}, that.word_delay);
       }
     }
   }
