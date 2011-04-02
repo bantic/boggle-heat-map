@@ -39,52 +39,6 @@ function getDir(pointA, pointB) {
   }
 }
 
-function setUpDirectionsDivs(__dirs) {
-  function htmlForDirections(_dirs) {
-    var html = "";
-    var dir_names = ['n','e','s','w','ne','se','nw','sw']
-    for (var i = 0; i < dir_names.length; i++) {
-      html = html + "<div class='" + dir_names[i] + "'>" + _dirs[dir_names[i]] + "</div>";
-    }
-    return html;
-  }
-  for (var i = 0; i < boggle_tiles.length; i++) {
-    for (var j = 0; j < boggle_tiles.length; j++) {
-      var div_id = i + "_" + j;
-      var div_inner_id = div_id + "_inner";
-      var div_inner = $("#" + div_inner_id);
-      div_inner.html(htmlForDirections(__dirs[div_id]));
-    }
-  }
-}
-
-function deriveDirections(boggle_paths) {
-  var __dirs = {};
-  var empty_dirs = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
-  
-  for (var i = 0; i < boggle_paths.length; i++) {
-    var cur_path = boggle_paths[i];
-    for (var j = 0; j < cur_path.length; j++) {
-      var cur_tile = cur_path[j];
-      var tile_id  = cur_tile[1] + "_" + cur_tile[0];
-      if (typeof(__dirs[tile_id]) == 'undefined') {
-        __dirs[tile_id] = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
-      }
-      var next_tile = cur_path[j + 1];
-      if (typeof(next_tile) !== 'undefined') {
-        var __dir = getDir( cur_tile, next_tile);
-        __dirs[tile_id][__dir] += 1;
-      }
-    }
-  }
-  
-  return __dirs;
-}
-
-function getMaxFromDirs(dirs) {
-  
-}
-
 function logLater(msg, delay) {
   setTimeout(function() {console.log(msg)}, delay);
 }
@@ -100,7 +54,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   
   this.drawing_paths    = false;
   this.current_path_idx = 0;
-  this.time_factor      = 10;
+  this.time_factor      = 1;
   
   
   this.makeGrid = function() {
@@ -109,7 +63,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       for (var c = 0; c < this.cols; c++) {
         var letter = this.boggle_tiles[r][c];
         var cur_row = $(".row").last();
-        var inner_div = "<div id='" + r + "_" + c + "_inner' class='inner'>hello</div>";
+        var inner_div = "<div id='" + r + "_" + c + "_inner' class='inner'></div>";
         cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + inner_div + "</div>");
         $("#" + r + "_" + c).mouseover(function() {
           var id = $(this).attr("id");
@@ -223,8 +177,63 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     letter.css("background-color", bg);
   }
   
+  this.deriveDirections = function() {
+    var dirs = {};
+    // var empty_dirs = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
+
+    for (var i = 0; i < this.boggle_paths.length; i++) {
+      var cur_path = this.boggle_paths[i];
+      for (var j = 0; j < cur_path.length; j++) {
+        var cur_tile = cur_path[j];
+        var tile_id  = cur_tile[1] + "_" + cur_tile[0];
+        if (typeof(dirs[tile_id]) == 'undefined') {
+          dirs[tile_id] = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
+        }
+        var next_tile = cur_path[j + 1];
+        if (typeof(next_tile) !== 'undefined') {
+          var dir = getDir( cur_tile, next_tile);
+          dirs[tile_id][dir] += 1;
+        }
+      }
+    }
+
+    return dirs;
+  }
+
+  this.getMaxFromDirs = function(dirs) {
+    var max = 0;
+    for (var r = 0; r < this.rows; r++) {
+      for (var c = 0; c < this.cols; c++) {
+        // row first, col second
+        var dir = dirs[r + "_" + c];
+        max = Math.max(max, dir['n'], dir['e'], dir['s'], dir['w'],
+                                dir['ne'], dir['nw'], dir['sw'], dir['se']);
+      }
+    }
+    return max;
+  }
+  
+  this.setUpDirectionsDivs = function(dirs) {
+    function htmlForDirections(single_dir_set) {
+      var html = "";
+      var dir_names = ['n','e','s','w','ne','se','nw','sw']
+      for (var i = 0; i < dir_names.length; i++) {
+        html = html + "<div class='" + dir_names[i] + "'>" + single_dir_set[dir_names[i]] + "</div>";
+      }
+      return html;
+    }
+    for (var i = 0; i < boggle_tiles.length; i++) {
+      for (var j = 0; j < boggle_tiles.length; j++) {
+        var div_id = i + "_" + j;
+        var div_inner_id = div_id + "_inner";
+        var div_inner = $("#" + div_inner_id);
+        div_inner.html(htmlForDirections(dirs[div_id]));
+      }
+    }
+  }
 }
 
 var bg = new BoggleVisualizer(boggle_tiles, boggle_paths);
 bg.makeGrid();
 bg.drawPaths();
+bg.setUpDirectionsDivs(bg.deriveDirections());
