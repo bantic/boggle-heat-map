@@ -1,6 +1,5 @@
 
 var boggle_tiles = [["n","u","s","l"],["r","x","n","i"],["m","u","a","i"],["a","s","m","g"]];
-var boggle_heats = [[0.0344827586206897,0.229885057471264,0.229885057471264,0.218390804597701],[0.206896551724138,0.0,0.701149425287356,0.505747126436782],[0.310344827586207,0.96551724137931,1.0,0.505747126436782],[0.103448275862069,0.425287356321839,0.367816091954023,0.114942528735632]];
 var boggle_paths = [[[1,0],[0,0],[0,1],[1,2],[2,1]],[[1,0],[0,1],[1,2],[1,3]],[[1,0],[2,1],[2,2],[2,3],[3,2]],[[1,0],[2,1],[2,2],[1,2]],[[1,0],[2,1],[1,2],[0,1],[0,0]],[[2,0],[2,1],[2,2],[3,3]],[[2,0],[2,1],[2,2],[3,1],[3,0]],[[2,0],[2,1],[1,2],[0,2]],[[2,0],[2,1],[1,2],[2,3]],[[2,0],[2,1],[1,2],[0,1]],[[2,0],[2,1],[3,2],[3,3]],[[2,0],[2,1],[1,0],[0,1]],[[2,0],[1,0],[0,1],[0,2],[0,3]],[[2,0],[3,1],[2,1],[2,2]],[[2,0],[3,1],[2,1],[1,2],[1,3]],[[2,0],[3,1],[2,2],[2,3]],[[3,0],[3,1],[3,2],[2,1]],[[3,0],[3,1],[2,1],[2,2]],[[3,0],[3,1],[2,1],[1,2],[1,3]],[[3,0],[3,1],[2,1],[1,2],[0,2]],[[3,0],[3,1],[2,1],[1,2],[2,3]],[[3,0],[3,1],[2,1],[1,0],[2,0]],[[3,0],[3,1],[2,2],[1,3]],[[0,1],[1,2],[1,3],[2,3],[2,2]],[[0,1],[1,2],[1,3],[0,3]],[[0,1],[1,2],[1,3],[0,2],[0,3]],[[0,1],[1,2],[1,3],[2,2]],[[0,1],[1,2],[2,3],[2,2],[2,1]],[[0,1],[1,0],[2,0],[3,1],[2,1]],[[1,1],[0,2],[0,3],[1,3]],[[2,1],[3,1],[2,2],[1,3]],[[2,1],[2,2],[3,2],[3,3]],[[2,1],[2,2],[1,3],[1,2],[0,3]],[[2,1],[2,2],[3,1],[3,0]],[[2,1],[2,2],[3,1],[2,0]],[[2,1],[1,2],[0,2],[0,3]],[[2,1],[1,2],[2,3],[2,2]],[[2,1],[3,2],[2,2],[1,3]],[[3,1],[2,1],[1,2],[0,1],[0,0]],[[3,1],[2,1],[3,2],[2,2]],[[3,1],[2,1],[1,0],[0,1],[0,0]],[[3,1],[2,2],[2,1],[1,2],[1,3]],[[3,1],[2,2],[2,1],[1,0],[2,0]],[[3,1],[2,0],[1,0],[0,1],[1,2],[1,3]],[[0,2],[1,2],[1,3],[0,3]],[[0,2],[1,2],[1,3],[2,2]],[[0,2],[1,2],[2,1],[3,1],[2,2]],[[0,2],[1,2],[2,1],[3,2],[2,2]],[[0,2],[0,3],[1,3],[1,2]],[[0,2],[0,3],[1,3],[2,2]],[[0,2],[0,3],[1,3],[2,2],[3,2]],[[0,2],[0,3],[1,3],[2,2],[3,1]],[[0,2],[0,3],[1,2],[1,1]],[[0,2],[0,3],[1,2],[2,1]],[[1,2],[0,1],[1,0],[2,0]],[[1,2],[2,1],[2,2],[2,3],[3,2]],[[1,2],[2,1],[2,0],[1,0],[0,0]],[[1,2],[2,1],[1,0],[0,1],[0,0]],[[2,2],[3,2],[2,1],[1,2]],[[2,2],[3,2],[2,1],[1,0]],[[2,2],[2,3],[3,2],[2,1]],[[2,2],[2,3],[3,2],[2,1],[3,1]],[[2,2],[2,1],[3,1],[3,0]],[[2,2],[2,1],[3,1],[2,0]],[[2,2],[2,1],[2,0],[1,0]],[[2,2],[2,1],[1,2],[1,3]],[[2,2],[2,1],[3,2],[2,3],[1,2],[1,3]],[[2,2],[2,1],[1,0],[2,0]],[[2,2],[3,1],[2,1],[1,2]],[[2,2],[3,1],[2,1],[1,0]],[[3,2],[2,2],[2,1],[1,2],[1,3]],[[3,2],[2,2],[2,1],[1,0],[2,0]],[[3,2],[2,1],[3,1],[2,2]],[[3,2],[2,1],[1,2],[0,1],[0,0]],[[3,2],[2,1],[1,0],[0,1],[0,0]],[[0,3],[0,2],[1,2],[2,1],[2,2],[2,3]],[[0,3],[1,2],[2,3],[2,2],[3,1],[3,0]],[[1,3],[2,3],[1,2],[0,1]],[[1,3],[0,3],[1,2],[0,2]],[[1,3],[0,3],[1,2],[2,3]],[[1,3],[0,3],[1,2],[0,1]],[[1,3],[0,3],[1,2],[2,1],[2,2]],[[1,3],[1,2],[0,1],[0,2],[0,3]],[[1,3],[0,2],[1,2],[0,1]],[[1,3],[2,2],[3,2],[2,3]],[[1,3],[2,2],[3,2],[2,1]],[[1,3],[2,2],[1,2],[0,2]],[[1,3],[2,2],[1,2],[2,3]],[[1,3],[2,2],[1,2],[0,1]],[[1,3],[2,2],[2,1],[2,0]],[[1,3],[2,2],[2,1],[2,0],[3,1]],[[1,3],[2,2],[3,1],[2,1]],[[1,3],[2,2],[3,1],[3,0]],[[2,3],[2,2],[3,2],[2,1]],[[2,3],[2,2],[3,2],[2,1],[2,0]],[[2,3],[2,2],[1,2],[1,1]],[[2,3],[2,2],[1,2],[2,1]],[[2,3],[2,2],[2,1],[3,1]],[[2,3],[2,2],[2,1],[3,1],[2,0]],[[2,3],[2,2],[2,1],[1,1]],[[2,3],[2,2],[2,1],[2,0]],[[2,3],[2,2],[2,1],[1,2],[1,3]],[[2,3],[2,2],[2,1],[1,2],[0,2],[0,3]],[[2,3],[2,2],[2,1],[3,2]],[[2,3],[2,2],[2,1],[1,0],[2,0]],[[2,3],[2,2],[1,3],[0,3]],[[2,3],[2,2],[1,3],[1,2]],[[2,3],[2,2],[3,3],[3,2]],[[2,3],[2,2],[3,1],[2,1]],[[2,3],[2,2],[3,1],[2,1],[2,0]],[[2,3],[2,2],[3,1],[3,0]],[[2,3],[1,2],[1,3],[0,3]],[[2,3],[1,2],[1,3],[2,2]],[[2,3],[1,2],[2,1],[3,1],[2,2]],[[2,3],[1,2],[2,1],[3,2],[2,2]],[[2,3],[3,2],[2,2],[2,1]],[[2,3],[3,2],[2,2],[1,3]],[[2,3],[3,2],[2,2],[1,3],[0,2]],[[2,3],[3,2],[2,2],[1,3],[0,2],[0,3]],[[2,3],[3,2],[2,1],[2,2]],[[2,3],[3,2],[2,1],[1,1]],[[2,3],[3,2],[2,1],[1,2],[1,3]],[[2,3],[3,2],[2,1],[1,0],[2,0]],[[3,3],[2,2],[3,2],[2,1]],[[3,3],[2,2],[3,2],[2,1],[2,0]],[[3,3],[2,2],[2,3],[3,2],[2,1]],[[3,3],[2,2],[1,2],[1,3]],[[3,3],[2,2],[1,2],[0,2]],[[3,3],[2,2],[1,2],[2,3]],[[3,3],[2,2],[1,2],[0,1]],[[3,3],[2,2],[1,2],[2,1]],[[3,3],[2,2],[3,1],[2,1]],[[3,3],[2,2],[3,1],[2,1],[2,0]],[[3,3],[2,2],[3,1],[3,0]]];
 
 function logLater(msg, delay) {
@@ -20,7 +19,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   this.current_path_idx = 0;
   this.word_delay       = 50;
   this.letter_delay     = 20;
-  
+  this.dirs             = {};
   
   this.makeGrid = function() {
     for (var r = 0; r < this.rows; r++) {
@@ -123,46 +122,63 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       $(".word.current").append( letter );
       if ( !next_point ) {
         setTimeout(function() {that.finishedWord();}, that.word_delay);
+      } else {
+        that.updateLetterData(current_point, next_point);
       }
     }
   }
-
-  this.highlightLetterPosition = function(row, column) {
-    var that = this;
-    return function() {
-      $(".letter.current").removeClass("current").addClass("current_word");
-      $("#" + column + "_" + row).addClass("current");
-      that.heatLetter(row, column);
-    }
+  
+  this.tile_id = function(point) {
+    return point[1] + "_" + point[0];
   }
   
-  this.heatLetter = function(row, column) {
-    var letter = $("#" + column + "_" + row);
-    var bg = letter.css("background-color");
-    var scale = 1.0 / this.boggle_paths.length;
-    bg = bg.split(",").pop().replace(" ","").replace(")","");
-    bg = parseFloat(bg,10) + scale;
-    bg = "rgba(255,0,0," + bg + ")";
-    letter.css("background-color", bg);
+  this.updateLetterData = function(current_point, next_point) {
+    var dir_data = this.getDirectionsForTilePair(current_point, next_point, this.dirs);
+    this.dirs[this.tile_id(current_point)] = dir_data;
+    this.updateDirections(current_point, dir_data);
+    this.updateLetterBG(current_point, dir_data);
+    this.highlightLetterPosition(current_point);
+  }
+  
+  this.highlightLetterPosition = function(current_point) {
+    $(".letter.current").removeClass("current").addClass("current_word");
+    $("#" + this.tile_id(current_point)).addClass("current");
+  }
+  
+  this.updateLetterBG = function(point, dir_data) {
+    var letter = $("#" + this.tile_id(point));
+    
+    var scale = 1.0 / this.letter_trav_max;
+    var bg_alpha = dir_data['max'] * scale;
+    letter.css("background-color", "rgba(255,0,0," + bg_alpha + ")");
+  }
+  
+  this.getDirectionsForTilePair = function(pointA, pointB, dir_collection) {
+    var tile_id  = this.tile_id(pointA);
+    var dir;
+    if (typeof(dir_collection[tile_id]) == 'undefined') {
+      dir = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0, total: 0, max: 0};
+    } else {
+      dir = dir_collection[tile_id];
+    }
+    if (typeof(pointB) !== 'undefined') {
+      var next_dir = this.getDir( pointA, pointB);
+      dir[next_dir] += 1;
+      dir['total']  += 1;
+      dir['max']    = Math.max(dir['max'], dir[next_dir]);
+    }
+    
+    return dir;
   }
   
   this.deriveDirections = function() {
     var dirs = {};
-    // var empty_dirs = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
 
     for (var i = 0; i < this.boggle_paths.length; i++) {
       var cur_path = this.boggle_paths[i];
       for (var j = 0; j < cur_path.length; j++) {
-        var cur_tile = cur_path[j];
-        var tile_id  = cur_tile[1] + "_" + cur_tile[0];
-        if (typeof(dirs[tile_id]) == 'undefined') {
-          dirs[tile_id] = {n: 0, s: 0, e: 0, w: 0, se: 0, sw: 0, ne: 0, nw: 0};
-        }
-        var next_tile = cur_path[j + 1];
-        if (typeof(next_tile) !== 'undefined') {
-          var dir = this.getDir( cur_tile, next_tile);
-          dirs[tile_id][dir] += 1;
-        }
+        dirs[this.tile_id(cur_path[j])] = 
+          this.getDirectionsForTilePair( cur_path[j], cur_path[j+1], dirs );
       }
     }
 
@@ -175,28 +191,44 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       for (var c = 0; c < this.cols; c++) {
         // row first, col second
         var dir = dirs[r + "_" + c];
-        max = Math.max(max, dir['n'], dir['e'], dir['s'], dir['w'],
-                                dir['ne'], dir['nw'], dir['sw'], dir['se']);
+        max = Math.max(max, dir['max']);
       }
     }
     return max;
   }
   
-  this.setUpDirectionsDivs = function(dirs) {
-    function htmlForDirections(single_dir_set) {
-      var html = "";
-      var dir_names = ['n','e','s','w','ne','se','nw','sw']
-      for (var i = 0; i < dir_names.length; i++) {
-        html = html + "<div class='" + dir_names[i] + "'>" + single_dir_set[dir_names[i]] + "</div>";
+  this.getMaxLetterTraversal = function(dirs) {
+    var max = 0;
+    for (var r = 0; r < this.rows; r++) {
+      for (var c = 0; c < this.cols; c++) {
+        // row first, col second
+        var dir = dirs[r + "_" + c];
+        max = Math.max(max, dir['total']);
       }
-      return html;
     }
-    for (var i = 0; i < boggle_tiles.length; i++) {
-      for (var j = 0; j < boggle_tiles.length; j++) {
-        var div_id = i + "_" + j;
-        var div_inner_id = div_id + "_inner";
-        var div_inner = $("#" + div_inner_id);
-        div_inner.html(htmlForDirections(dirs[div_id]));
+    return max;
+  }
+  
+  this.htmlForDirections = function(single_dir_set) {
+    var html = "";
+    var dir_names = ['n','e','s','w','ne','se','nw','sw']
+    for (var i = 0; i < dir_names.length; i++) {
+      html = html + "<div class='" + dir_names[i] + "'>" + single_dir_set[dir_names[i]] + "</div>";
+    }
+    return html;
+  }
+  
+  this.updateDirections = function(tile, dir) {
+    var div_inner_id = this.tile_id(tile) + "_inner";
+    var div_inner = $("#" + div_inner_id);
+    div_inner.html(this.htmlForDirections(dir));
+  }
+  
+  this.setUpDirectionsDivs = function(dirs) {
+    for (var c = 0; c < this.cols; c++) {
+      for (var r = 0; r < this.rows; r++) {
+        var div_id = r + "_" + c;
+        this.updateDirections([r,c], dirs[div_id]);
       }
     }
   }
@@ -236,6 +268,10 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       }
     }
   }
+  
+  this.derived_dirs      = this.deriveDirections(this.boggle_tiles);
+  this.dir_max          = this.getMaxFromDirs(this.derived_dirs);
+  this.letter_trav_max  = this.getMaxLetterTraversal(this.derived_dirs);
 }
 
 var bg = new BoggleVisualizer(boggle_tiles, boggle_paths);
