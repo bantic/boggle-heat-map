@@ -18,8 +18,8 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   
   this.drawing_paths    = false;
   this.current_path_idx = 0;
-  this.word_delay       = 100;
-  this.letter_delay     = 100;
+  this.word_delay       = 50;
+  this.letter_delay     = 20;
   
   
   this.makeGrid = function() {
@@ -94,10 +94,14 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     }
   }  
   
-  this.newWord = function() {
+  this.finishedWord = function() {
     $(".word.current").removeClass("current");
     $(".letter.current_word").removeClass("current_word");
     $(".letter.current").removeClass("current");
+    this.drawing_paths = false;
+  }
+  
+  this.newWord = function() {
     $("#words").append("<div class='word current'></div>");
   }
   
@@ -118,7 +122,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       var letter = that.boggle_tiles[current_point[1]][current_point[0]];
       $(".word.current").append( letter );
       if ( !next_point ) {
-        setTimeout(function() {that.drawing_paths = false;}, that.word_delay);
+        setTimeout(function() {that.finishedWord();}, that.word_delay);
       }
     }
   }
@@ -156,7 +160,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
         }
         var next_tile = cur_path[j + 1];
         if (typeof(next_tile) !== 'undefined') {
-          var dir = getDir( cur_tile, next_tile);
+          var dir = this.getDir( cur_tile, next_tile);
           dirs[tile_id][dir] += 1;
         }
       }
@@ -236,5 +240,4 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
 
 var bg = new BoggleVisualizer(boggle_tiles, boggle_paths);
 bg.makeGrid();
-bg.drawPaths();
 bg.setUpDirectionsDivs(bg.deriveDirections());
