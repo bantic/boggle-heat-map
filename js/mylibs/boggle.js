@@ -134,7 +134,8 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     var dir_data = this.getDirectionsForTilePair(current_point, next_point, this.dirs);
     this.dirs[this.tile_id(current_point)] = dir_data;
     this.updateDirections(current_point, dir_data);
-    this.updateLetterBG(current_point, dir_data);
+    // this.updateLetterBG(current_point, dir_data);
+    this.updateLetterBGGradient(current_point, dir_data);
     this.highlightLetterPosition(current_point);
   }
   
@@ -147,6 +148,12 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     var letter = $("#" + this.tile_id(point));
     var bg_alpha = dir_data['total'] * this.bg_alpha_scale;
     letter.css("background-color", "rgba(255,0,0," + bg_alpha + ")");
+  }
+  
+  this.updateLetterBGGradient = function(point, dir_data) {
+    var letter = $("#" + this.tile_id(point));
+    console.log("tile id: " + this.tile_id(point) + ", gradient css: " + gradientBG(dir_data, this.gradient_alpha_scale));
+    letter.css("background", gradientBG(dir_data, this.gradient_alpha_scale));
   }
   
   this.getDirectionsForTilePair = function(pointA, pointB, dir_collection) {
@@ -269,9 +276,63 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   this.dir_max          = this.getMaxFromDirs(this.derived_dirs);
   this.letter_trav_max  = this.getMaxLetterTraversal(this.derived_dirs);
   this.line_alpha_scale = 1.0 / this.dir_max;
+  this.gradient_alpha_scale = 1.0 / this.dir_max;
   this.bg_alpha_scale   = 0.8 * (1.0 / this.letter_trav_max);
 }
 
 var bg = new BoggleVisualizer(boggle_tiles, boggle_paths);
 bg.makeGrid();
 bg.setUpDirectionsDivs(bg.deriveDirections());
+
+function gradientCSSString(alpha, dir) {
+  var string = "-webkit-gradient(radial,";
+  var dir_string;
+  switch(dir) {
+  case 'n':
+    dir_string = "50% 0%";
+    break;
+  case 'e':
+    dir_string = "100% 50%";
+    break;
+  case 'w':
+    dir_string = "0% 50%";
+    break;
+  case 's':
+    dir_string = "50% 100%";
+    break;
+  case 'ne':
+    dir_string = "100% 0%";
+    break;
+  case 'nw':
+    dir_string = "0% 0%";
+    break;
+  case 'sw':
+    dir_string = "0% 100%";
+    break;
+  case 'se':
+    dir_string = "100% 100%";
+    break;
+  }
+  string += dir_string + ", 0, " + dir_string + ", 66, from(rgba(255,0,0," + alpha + ")), " +
+            "to(rgba(255,255,255,0)))";
+  return string;
+}
+
+function gradientBG(dir_data, scale) {
+  // -webkit-gradient(
+  //   radial, 100 100, 0, 100 100, 66, from(rgba(255,0,0,255)), to(rgba(255,255,255,0))
+  // ),
+  // -webkit-gradient(
+  //   radial, 50 50, 0, 50 50, 66, from(rgba(0,0,255,255)), to(rgba(255,255,255,0))
+  // ),
+  // -webkit-gradient(
+  //   radial, 0 50, 0, 0 50, 66, from(rgba(0,255,0,255)), to(rgba(255,255,255,0))
+  // )
+  var css_string = [];
+  var dirs = ['n', 'e', 's', 'w', 'ne', 'nw', 'se', 'sw'];
+  for (var i = 0; i < dirs.length; i++) {
+    var alpha = dir_data[dirs[i]] * scale;
+    css_string.push(gradientCSSString(alpha, dirs[i]));
+  }
+  return css_string.join(",");
+}
