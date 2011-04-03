@@ -66,9 +66,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     var row_height = 100;
     var col_width  = 100;
     var last_point = null;
-
-    this.ctx.strokeStyle = "rgba(255,0,0,0.1)";
-
+    
     var next_point, prev_point;
     for (var i = 0; i < path.length; i++) {
       var current_point = path[i];
@@ -88,7 +86,6 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       }
 
       setTimeout(this.addLetterToWord(current_point, next_point), new_delay);
-      setTimeout(this.highlightLetterPosition(current_point[0], current_point[1]), new_delay);
       prev_point = current_point;
     }
   }  
@@ -105,13 +102,14 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   }
   
   this.drawLine = function(x1,y1,x2,y2) {
-    var ctx = this.ctx;
+    var that = this;
     return function() {
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(x1,y1);
-      ctx.lineTo(x2,y2);
-      ctx.stroke();
+      that.ctx.strokeStyle = "rgba(7,90,242," + that.line_alpha_scale + ")";
+      that.ctx.lineWidth = 2;
+      that.ctx.beginPath();
+      that.ctx.moveTo(x1,y1);
+      that.ctx.lineTo(x2,y2);
+      that.ctx.stroke();
     }
   }
   
@@ -147,9 +145,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   
   this.updateLetterBG = function(point, dir_data) {
     var letter = $("#" + this.tile_id(point));
-    
-    var scale = 1.0 / this.letter_trav_max;
-    var bg_alpha = dir_data['max'] * scale;
+    var bg_alpha = dir_data['total'] * this.bg_alpha_scale;
     letter.css("background-color", "rgba(255,0,0," + bg_alpha + ")");
   }
   
@@ -269,9 +265,11 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     }
   }
   
-  this.derived_dirs      = this.deriveDirections(this.boggle_tiles);
+  this.derived_dirs     = this.deriveDirections(this.boggle_tiles);
   this.dir_max          = this.getMaxFromDirs(this.derived_dirs);
   this.letter_trav_max  = this.getMaxLetterTraversal(this.derived_dirs);
+  this.line_alpha_scale = 1.0 / this.dir_max;
+  this.bg_alpha_scale   = 0.8 * (1.0 / this.letter_trav_max);
 }
 
 var bg = new BoggleVisualizer(boggle_tiles, boggle_paths);
