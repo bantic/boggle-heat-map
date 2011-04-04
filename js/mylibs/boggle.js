@@ -331,6 +331,3 @@ function gradientBG(dir_data, scale) {
   }
   return css_string.join(",");
 }
-
-var bg = new BoggleVisualizer(boggle_tiles[3], boggle_paths[3].sort());
-bg.makeGrid();
