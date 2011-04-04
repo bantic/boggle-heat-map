@@ -143,7 +143,7 @@ header h2 {
   color: #FFF;
 }
 
-.letter.current_word {
+.letter.current_word, .letter.viewed {
   text-shadow: 0 0 10px #9DBCF5;
   -webkit-text-stroke-width: 1px;
   -webkit-text-stroke-color: #9DBCF5;

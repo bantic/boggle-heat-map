@@ -13,8 +13,8 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   
   this.drawing_paths    = false;
   this.current_path_idx = 0;
-  this.word_delay       = 50;
-  this.letter_delay     = 20;
+  this.word_delay       = 360;
+  this.letter_delay     = 300;
   this.dirs             = {};
   
   this.makeGrid = function() {
@@ -94,8 +94,30 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   }
   
   this.newWord = function() {
-    $("#words").append("<div class='word current'></div>");
+    var word_id = "word_" + this.current_path_idx;
+    var that = this;
+    $("#words").append("<div class='word current' id='" + word_id + "'></div>");
+    $("#" + word_id).mouseover(function() {
+      var path_idx = parseInt($(this).attr("id").split("_")[1]);
+      var path = that.boggle_paths[path_idx];
+      that.highlightPath(path);
+    }).mouseout(function() {
+      var path_idx = parseInt($(this).attr("id").split("_")[1]);
+      that.unhighlightPath(that.boggle_paths[path_idx]);
+    });
     $("#words").scrollTop($("#words")[0].scrollHeight);
+  }
+  
+  this.highlightPath = function(path) {
+    for (var i = 0; i < path.length; i++) {
+      $("#" + this.tile_id(path[i])).addClass("viewed");
+    }
+  }
+  
+  this.unhighlightPath = function(path) {
+    for (var i = 0; i < path.length; i++) {
+      $("#" + this.tile_id(path[i])).removeClass("viewed");
+    }
   }
   
   this.drawLine = function(x1,y1,x2,y2) {
