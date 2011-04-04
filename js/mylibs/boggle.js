@@ -115,10 +115,9 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
     return function() {
       var letter = that.boggle_tiles[current_point[1]][current_point[0]];
       $(".word.current").append( letter );
+      that.updateLetterData(current_point, next_point);
       if ( !next_point ) {
         setTimeout(function() {that.finishedWord();}, that.word_delay);
-      } else {
-        that.updateLetterData(current_point, next_point);
       }
     }
   }
@@ -128,12 +127,14 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   }
   
   this.updateLetterData = function(current_point, next_point) {
-    var dir_data = this.getDirectionsForTilePair(current_point, next_point, this.dirs);
-    this.dirs[this.tile_id(current_point)] = dir_data;
-    this.updateDirections(current_point, dir_data);
-    // this.updateLetterBG(current_point, dir_data);
-    this.updateLetterBGGradient(current_point, dir_data);
     this.highlightLetterPosition(current_point);
+    if (next_point) {
+      var dir_data = this.getDirectionsForTilePair(current_point, next_point, this.dirs);
+      this.dirs[this.tile_id(current_point)] = dir_data;
+      this.updateDirections(current_point, dir_data);
+      // this.updateLetterBG(current_point, dir_data);
+      this.updateLetterBGGradient(current_point, dir_data);
+    }
   }
   
   this.highlightLetterPosition = function(current_point) {
