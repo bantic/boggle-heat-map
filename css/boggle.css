@@ -1,9 +1,31 @@
-#words {
-  width: 400px;
+#main {
+  border: 1px solid blue;
+  position: relative;
+  margin-top: 30px;
+}
+
+#canvas_wrapper {
+  width:400px; height:400px; position: relative; margin: 0 auto;
+}
+
+#words_wrapper {
+  width: 200px;
   border: 1px solid blue;
   position: absolute;
-  left: 10px;
-  top: 10px;
+  left: 75px;
+  top: 0;
+}
+
+#words {
+  overflow: auto;
+  height: 382px;
+}
+
+#controls {
+  position: absolute;
+  width: 200px;
+  top: 0;
+  right: 75px;
 }
 
 #grid {

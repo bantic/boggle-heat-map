@@ -95,6 +95,7 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   
   this.newWord = function() {
     $("#words").append("<div class='word current'></div>");
+    $("#words").scrollTop($("#words")[0].scrollHeight);
   }
   
   this.drawLine = function(x1,y1,x2,y2) {
@@ -189,7 +190,8 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       for (var c = 0; c < this.cols; c++) {
         // row first, col second
         var dir = dirs[r + "_" + c];
-        max = Math.max(max, dir['max']);
+        var dir_max = (typeof(dir) === 'undefined') ? 0 : dir['max'];
+        max = Math.max(max, dir_max);
       }
     }
     return max;
@@ -201,7 +203,9 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       for (var c = 0; c < this.cols; c++) {
         // row first, col second
         var dir = dirs[r + "_" + c];
-        max = Math.max(max, dir['total']);
+        var dir_total = (typeof(dir) === 'undefined') ? 0 : dir['total'];
+        
+        max = Math.max(max, dir_total);
       }
     }
     return max;
@@ -328,5 +332,5 @@ function gradientBG(dir_data, scale) {
   return css_string.join(",");
 }
 
-var bg = new BoggleVisualizer(boggle_tiles[1], boggle_paths[1]);
+var bg = new BoggleVisualizer(boggle_tiles[3], boggle_paths[3].sort());
 bg.makeGrid();
