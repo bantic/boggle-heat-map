@@ -3,6 +3,22 @@
               -webkit-gradient(radial, 100% 0%, 0, 100% 0%, 150, from(rgba(255,0,0,255)), to(rgba(255,255,255,0)));
 }
 
+#footer {
+  position: relative;
+  margin-top: 60px;
+}
+
+#promo {
+  position: absolute;
+  width: 450px;
+  left: 20%;
+}
+
+#links {
+  position: absolute;
+  width: 300px;
+  right: 20%;
+}
 
 header {
   text-align: center;

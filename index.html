@@ -35,10 +35,23 @@
  
   <!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
   <script src="js/libs/modernizr-1.6.min.js"></script>
+  
+  <script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-22514951-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+  </script>
 </head>
 
 <body>
-
   <div id="container">
     <header>
       <h1 id="boggle_heat_maps">Boggle Heat Maps</h1>
@@ -61,27 +74,48 @@
       </div>
       
       <div id="controls">
+        <h2>Controls</h2>
+        <br><br>
         <div><button onclick="bg.paused = false; bg.drawPaths();">Go</button></div>
         <div><button onclick="bg.pause();">Pause</button></div>
+        <br>
+        Change speed (fastest -- slowest)
         <div id="slider"></div>
-        Use flat letter backgrounds:
+        <br>
+        Use flat letter backgrounds (no gradients):
         <input type='checkbox' onclick="bg.use_letter_gradients=!bg.use_letter_gradients;" />
+        
+        <br><br>
+        Load a different board:
+        <select name="some_name" id="some_name" onchange="changeBoard(this.value);" size="1">
+          <option value="0">Super Dense Board</option>
+          <option value="1">Board 1</option>
+          <option value="2">Board 2</option>
+          <option value="3">Board 3</option>
+        </select>
       </div>
       
     </div>
     
-    <footer>
-      <div id="promo">
-        twitter
-        github boggle solver
+    <div id='footer'>
+      <div id='info'>
+        <div id="promo">
+          <h2>About</h2>
+          This was created by <a href="http://twitter.com/bantic">Cory Forsyth</a>.
+          <a href="http://www.twitter.com/bantic"><img src="http://twitter-badges.s3.amazonaws.com/twitter-a.png" alt="Follow bantic on Twitter"/></a>
+          <br>
+          (For only boggle heat maps-related updates, follow <a href="http://twitter.com/boggleheatmaps">@boggleheatmaps</a>.)
+          <br><br>
+          The boggle solutions data is pre-generated using a <a href="https://github.com/bantic/ruby-quiz/tree/master/boggle">boggle solver</a> I wrote in ruby.
+        </div>
+    
+        <div id="links">
+          <h2>Links</h2>
+          The densest 4x4 and 5x5 boards, a 4x4 board with 0 words, the most-common boggle words, some words (like 'baby') that are impossible in boggle, and more are
+          here at <a href="http://delicious.com/eoligarry/boggle">my collection of boggle-related links on delicious</a>.
+        </div>
       </div>
-      
-      <div id="links">
-        interesting links
-      </div>
-      
-        http://potm.tripod.com/BOGGLE/problem.long.html
-    </footer>
+    </div>
   </div> <!--! end of #container -->
 
 
@@ -117,7 +151,7 @@
 
   <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
-      bg = new BoggleVisualizer(boggle_tiles[3], boggle_paths[3].sort());
+      bg = new BoggleVisualizer(boggle_tiles[0], boggle_paths[0].sort());
       bg.makeGrid();
       
       $("#slider").slider({min: 10, 
@@ -127,7 +161,31 @@
           bg.letter_delay = ui.value;
           bg.word_delay   = 1.3 * ui.value;
         }});
+      if (!$.browser.webkit) {
+        alert("This page uses the webkit rendering engine heavily. Please visit using Chrome or Safari!");
+      }
     });
+    
+    function changeBoard(board_index) {
+      board_index = parseInt(board_index);
+      var current_letter_delay = bg.letter_delay;
+      var current_word_delay   = bg.word_delay;
+      var current_use_letter_gradients = bg.use_letter_gradients;
+      bg = new BoggleVisualizer(boggle_tiles[board_index], boggle_paths[board_index].sort());
+      bg.letter_delay = current_letter_delay;
+      bg.word_delay = current_word_delay;
+      bg.use_letter_gradients = current_use_letter_gradients;
+    
+      $("#grid").empty();
+      bg.makeGrid();
+      $("#words").empty();
+      
+      
+      var canvas = document.getElementById('canvas_layer1');
+      var ctx    = canvas.getContext('2d');
+      
+      ctx.clearRect ( 0, 0, 400, 400);
+    }
   </script>
 
 
