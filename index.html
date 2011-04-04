@@ -41,6 +41,7 @@
 
   <div id="container">
     <header>
+      <h1 id="boggle_heat_maps">Boggle Heat Maps</h1>
       <h2>I'm the king of boggle / there is none higher /
       I gets 11 points on the word quagmire -- Beastie Boys</h2>
     </header>
@@ -48,7 +49,7 @@
     <div id="main">
       <div id='canvas_wrapper'>
         <div id='grid' style='position: absolute; left: 0; top: 0; z-index:1'></div>
-        <canvas id='canvas_layer1' width='400' height='400' style='border: 1px solid black; background-color: #EEE; position: absolute; left: 0; top: 0; z-index:0;'></canvas>
+        <canvas id='canvas_layer1' width='400' height='400'></canvas>
       </div>
       
       
@@ -116,9 +117,13 @@
     $(document).ready(function() {
       bg = new BoggleVisualizer(boggle_tiles[3], boggle_paths[3].sort());
       bg.makeGrid();
+      var default_letter_delay = 300;
+      bg.letter_delay = default_letter_delay;
+      bg.word_delay = 1.3 * default_letter_delay;
       
       $("#slider").slider({min: 10, 
         max: 500,
+        value: 300,
         change: function(event, ui) {
           bg.letter_delay = ui.value;
           bg.word_delay   = 1.3 * ui.value;
