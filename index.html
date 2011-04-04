@@ -169,6 +169,7 @@
     });
     
     function changeBoard(board_index) {
+      bg.pause();
       board_index = parseInt(board_index);
       var current_letter_delay = bg.letter_delay;
       var current_word_delay   = bg.word_delay;
