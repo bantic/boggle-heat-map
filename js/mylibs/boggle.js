@@ -44,15 +44,22 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   }
   
   this.drawPaths = function() {
+    if (this.paused) {
+      return;
+    }
     if (this.drawing_paths) {
-      setTimeout(this.drawPathsHelper(), 50);
+      setTimeout(this.drawPathsHelper(), 20);
       return;
     }
     if (this.boggle_paths[this.current_path_idx]) {
       this.drawPath(this.boggle_paths[this.current_path_idx]);
       this.current_path_idx++;
-      setTimeout(this.drawPathsHelper(), 50);
+      setTimeout(this.drawPathsHelper(), 20);
     }
+  }
+  
+  this.pause = function() {
+    this.paused = true;
   }
   
   this.drawPath = function(path, delay) {
@@ -154,8 +161,11 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
       var dir_data = this.getDirectionsForTilePair(current_point, next_point, this.dirs);
       this.dirs[this.tile_id(current_point)] = dir_data;
       this.updateDirections(current_point, dir_data);
-      // this.updateLetterBG(current_point, dir_data);
-      this.updateLetterBGGradient(current_point, dir_data);
+      if (this.use_letter_gradients) {
+        this.updateLetterBG(current_point, dir_data);
+      } else {
+        this.updateLetterBGGradient(current_point, dir_data);
+      }
     }
   }
   

@@ -61,9 +61,11 @@
       </div>
       
       <div id="controls">
-        <div><button onclick="bg.drawPaths();">Go</button></div>
+        <div><button onclick="bg.paused = false; bg.drawPaths();">Go</button></div>
+        <div><button onclick="bg.pause();">Pause</button></div>
         <div id="slider"></div>
-        
+        Use flat letter backgrounds:
+        <input type='checkbox' onclick="bg.use_letter_gradients=!bg.use_letter_gradients;" />
       </div>
       
     </div>
