@@ -17,6 +17,17 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
   this.letter_delay     = 300;
   this.dirs             = {};
   
+  this.getPathsStartingWith = function(point) {
+    var paths = [];
+    for (var i = 0; i < this.boggle_paths.length; i++) {
+      var path = this.boggle_paths[i];
+      if (path[0][0] == point[0] && path[0][1] == point[1]) {
+        paths.push(path);
+      }
+    }
+    return paths;
+  }
+  
   this.makeGrid = function() {
     for (var r = 0; r < this.rows; r++) {
       $('#grid').append("<div class='row'></div>");
@@ -25,12 +36,25 @@ function BoggleVisualizer(boggle_tiles, boggle_paths) {
         var cur_row = $(".row").last();
         var inner_div = "<div id='" + r + "_" + c + "_inner' class='inner'></div>";
         cur_row.append("<div class='letter' id='" + r + "_" + c + "'>" + letter.toUpperCase() + inner_div + "</div>");
+        var that = this;
         $("#" + r + "_" + c).mouseover(function() {
           var id = $(this).attr("id");
           $("#" + id + "_inner").show();
+          var points = id.split("_");
+          var point  = [parseInt(points[1]), parseInt(points[0])];
+          var paths = that.getPathsStartingWith(point);
+          for (var i = 0; i < paths.length; i++) {
+            that.highlightPath(paths[i]);
+          }
         }).mouseout(function() {
           var id = $(this).attr("id");
           $("#" + id + "_inner").hide();
+          var points = id.split("_");
+          var point  = [parseInt(points[1]), parseInt(points[0])];
+          var paths = that.getPathsStartingWith(point);
+          for (var i = 0; i < paths.length; i++) {
+            that.unhighlightPath(paths[i]);
+          }
         });
       }
     }
